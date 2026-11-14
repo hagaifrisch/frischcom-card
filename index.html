@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-theme="logo" data-label="glass">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>חגי פריש | חוקר פרטי</title>
+<meta name="description" content="חגי פריש – חוקר פרטי. טלפון 052-2574466 · hagai@frischcom.com">
+<meta property="og:title" content="חגי פריש | חוקר פרטי">
+<meta property="og:description" content="כרטיס ביקור דיגיטלי – חיוג, וואטסאפ, מייל ושמירת איש קשר">
+<meta name="theme-color" content="#f8f6f2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  /* ===== פלטות צבע ===== */
+  :root, [data-theme="logo"]{          /* צבעי הלוגו */
+    --page:#efebe4; --card:#f8f6f2; --line:#e4ddd2;
+    --mark:#bf9579; --ink:#6f5848; --muted:#9a8a7d;
+    --label-bg:#ffffff; --label-ink:#6f5848;
+    --btn-bg:#bf9579; --btn-ink:#ffffff; --chip:#ffffff;
+  }
+  [data-theme="espresso"]{             /* אספרסו – כהה וחם */
+    --page:#1c1612; --card:#2a211c; --line:#3d322b;
+    --mark:#c9a083; --ink:#f3ece4; --muted:#b3a497;
+    --label-bg:#f8f6f2; --label-ink:#5a4638;
+    --btn-bg:#c9a083; --btn-ink:#231a15; --chip:#342922;
+  }
+  [data-theme="navy"]{                 /* כחול לילה + קאמל */
+    --page:#0f1722; --card:#17212e; --line:#263345;
+    --mark:#c59a7c; --ink:#eef1f5; --muted:#98a4b3;
+    --label-bg:#f8f6f2; --label-ink:#2a3647;
+    --btn-bg:#c59a7c; --btn-ink:#141c27; --chip:#1f2b3b;
+  }
+  [data-theme="sage"]{                 /* מרווה ואבן */
+    --page:#e9ebe5; --card:#f6f6f2; --line:#dcdfd5;
+    --mark:#7d8b72; --ink:#3f4a3a; --muted:#858d7e;
+    --label-bg:#ffffff; --label-ink:#3f4a3a;
+    --btn-bg:#5f6d55; --btn-ink:#ffffff; --chip:#ffffff;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    min-height:100vh; background:var(--page); color:var(--ink);
+    font-family:'Heebo',system-ui,sans-serif;
+    display:flex; justify-content:center; align-items:flex-start;
+    padding:32px 16px; transition:background .3s,color .3s;
+  }
+  .card{
+    width:100%; max-width:420px; background:var(--card);
+    border:1px solid var(--line); border-radius:22px; overflow:hidden;
+    box-shadow:0 18px 50px rgba(60,40,25,.14); transition:background .3s;
+  }
+
+  /* ===== לוגו ===== */
+  header{padding:36px 24px 26px; text-align:center; border-bottom:1px solid var(--line)}
+  .logo{position:relative; width:100%; max-width:330px; margin:0 auto}
+  .logo svg{display:block; width:100%; height:auto; overflow:visible}
+  .logo .stroke{stroke:var(--mark); fill:none; stroke-width:66; filter:drop-shadow(10px 10px 10px rgba(0,0,0,.12))}
+  .logo .axis{stroke:var(--mark); stroke-width:4}
+  .logo .dot{fill:var(--mark)}
+  .label{
+    position:absolute; left:8.3%; width:80.4%; top:43.4%; height:38%;
+    background:var(--label-bg); color:var(--label-ink); border-radius:12px;
+    display:flex; flex-direction:column; justify-content:center; align-items:center; gap:2px;
+  }
+  .label h1, .label p{font-weight:800; letter-spacing:.42em; padding-right:.42em; line-height:1.25}
+  .label h1{font-size:clamp(17px,5.4vw,22px)}
+  .label p{font-size:clamp(16px,5vw,21px)}
+  .logo .inner{display:none; stroke:var(--card); fill:none; stroke-width:50}
+  .label{transition:background .3s}
+
+  /* ===== סגנונות תווית ===== */
+  /* זכוכית: שקיפות חלקית + טשטוש */
+  [data-label="glass"] .label{
+    background:color-mix(in srgb, var(--card) 55%, transparent);
+    backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px);
+    color:var(--ink); box-shadow:0 0 0 1px color-mix(in srgb, var(--mark) 35%, transparent);
+  }
+  /* עמום: תווית שקופה, האותיות בגוון בהיר */
+  [data-label="faded"] .label{background:transparent; color:var(--ink)}
+  [data-label="faded"] .logo .stroke{opacity:.28; filter:none}
+  [data-label="faded"] .logo .axis{opacity:.45}
+  /* קו מתאר: האותיות כקונטור דק */
+  [data-label="outline"] .label{background:transparent; color:var(--ink)}
+  [data-label="outline"] .logo .stroke{filter:none}
+  [data-label="outline"] .logo .inner{display:inline}
+  [data-label="outline"] .logo .axis{opacity:.6}
+  /* הילה: האותיות במלוא הצבע, לכיתוב מסגרת בצבע הרקע */
+  [data-label="halo"] .label{background:transparent; color:var(--ink)}
+  [data-label="halo"] .label h1,[data-label="halo"] .label p{
+    text-shadow:0 0 2px var(--card),0 0 4px var(--card),0 0 6px var(--card),0 0 10px var(--card),0 0 14px var(--card),0 0 18px var(--card);
+  }
+  [data-label="halo"] .logo .stroke{opacity:.85}
+
+  .tag{color:var(--muted); font-size:13px; letter-spacing:.2em; margin-top:22px}
+
+  /* ===== כפתורי פעולה ===== */
+  .actions{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; padding:20px 16px}
+  .act{
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    color:var(--ink); text-decoration:none; font-size:13px; font-weight:500;
+    padding:10px 4px; border-radius:14px; transition:transform .15s;
+  }
+  .act:hover{transform:translateY(-2px)}
+  .act .ic{
+    width:50px; height:50px; border-radius:50%; display:grid; place-items:center;
+    background:var(--chip); border:1px solid var(--line);
+  }
+  svg.i{width:22px; height:22px; stroke:var(--mark); fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+
+  .details{list-style:none; padding:0 20px 4px}
+  .details li a{
+    display:flex; align-items:center; gap:14px; padding:13px 6px;
+    color:var(--ink); text-decoration:none; border-top:1px solid var(--line);
+  }
+  .details li:first-child a{border-top:none}
+  .details svg.i{width:19px; height:19px}
+  .details small{display:block; color:var(--muted); font-size:12px}
+  .details span{direction:ltr; unicode-bidi:isolate; font-weight:500; letter-spacing:.04em}
+
+  .btns{padding:16px 20px 6px; display:grid; gap:10px}
+  button{
+    font:inherit; font-size:16px; font-weight:500; cursor:pointer; width:100%;
+    padding:14px; border-radius:14px; border:1.5px solid var(--btn-bg);
+    display:flex; align-items:center; justify-content:center; gap:10px;
+  }
+  .primary{background:var(--btn-bg); color:var(--btn-ink)}
+  .primary:hover{filter:brightness(1.06)}
+  .ghost{background:transparent; color:var(--ink)}
+  .ghost:hover{background:var(--chip)}
+  button svg{width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+
+  .qr{padding:20px 20px 26px; text-align:center}
+  .qr-box{display:inline-block; background:#fff; padding:12px; border-radius:14px; border:1px solid var(--line)}
+  .qr-box img,.qr-box canvas{display:block; width:140px; height:140px}
+  .qr p{color:var(--muted); font-size:13px; margin-top:12px}
+
+  footer{border-top:1px solid var(--line); padding:16px; text-align:center; color:var(--muted); font-size:12px; letter-spacing:.15em}
+  .toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(90px);
+    background:var(--ink); color:var(--card); padding:10px 18px; border-radius:999px;
+    font-size:14px; transition:transform .3s; pointer-events:none;
+  }
+  .toast.show{transform:translateX(-50%) translateY(0)}
+
+  /* ===== בורר צבעים זמני – להסרה אחרי שבוחרים ===== */
+  .picker{
+    position:fixed; top:12px; left:50%; transform:translateX(-50%); z-index:10;
+    display:flex; align-items:center; gap:8px; padding:7px 10px;
+    background:rgba(255,255,255,.92); border:1px solid #ddd; border-radius:999px;
+    box-shadow:0 4px 16px rgba(0,0,0,.12); font-size:12px; color:#555;
+  }
+  .picker b{font-weight:500; padding:0 4px; white-space:nowrap}
+  .picker{flex-wrap:wrap; justify-content:center; max-width:calc(100vw - 24px); border-radius:18px}
+  .picker .sep{width:1px; height:22px; background:#ddd}
+  .picker select{font:inherit; font-size:12px; padding:4px 6px; border:1px solid #ccc; border-radius:8px; background:#fff}
+  .sw{width:26px; height:26px; border-radius:50%; cursor:pointer; border:2px solid #fff; box-shadow:0 0 0 1px #ccc}
+  .sw[aria-pressed="true"]{box-shadow:0 0 0 2px #333}
+  body{padding-top:112px}
+</style>
+</head>
+<body>
+<div class="picker" role="group" aria-label="בחירת צבעים">
+  <b id="themeName">צבעי הלוגו</b>
+  <button class="sw" data-t="logo" data-n="צבעי הלוגו" style="background:linear-gradient(135deg,#f8f6f2 50%,#bf9579 50%)" aria-pressed="true"></button>
+  <button class="sw" data-t="espresso" data-n="אספרסו" style="background:linear-gradient(135deg,#2a211c 50%,#c9a083 50%)"></button>
+  <button class="sw" data-t="navy" data-n="כחול לילה" style="background:linear-gradient(135deg,#17212e 50%,#c59a7c 50%)"></button>
+  <button class="sw" data-t="sage" data-n="מרווה" style="background:linear-gradient(135deg,#f6f6f2 50%,#7d8b72 50%)"></button>
+  <span class="sep"></span>
+  <b>תווית:</b>
+  <select id="labelStyle" aria-label="סגנון תווית">
+    <option value="solid">לבנה (מקור)</option>
+    <option value="glass" selected>זכוכית</option>
+    <option value="faded">שקופה – אותיות עמומות</option>
+    <option value="outline">שקופה – קו מתאר</option>
+    <option value="halo">שקופה – הילה סביב הכיתוב</option>
+  </select>
+</div>
+
+<main class="card">
+  <header>
+    <div class="logo">
+      <svg viewBox="440 530 1080 740" aria-hidden="true">
+        <line class="axis" x1="966" y1="559" x2="966" y2="850"/>
+        <line class="axis" x1="966" y1="1130" x2="966" y2="1238"/>
+        <circle class="dot" cx="966" cy="559" r="8"/>
+        <circle class="dot" cx="966" cy="1238" r="8"/>
+        <!-- ח -->
+        <path class="stroke" d="M1147 1083 V689 H1330 A117 117 0 0 1 1447 806 V1083" stroke-linejoin="miter"/>
+        <!-- פ -->
+        <path class="stroke" d="M600 880 Q505 860 505 780 V689 H640 A162 162 0 0 1 802 851 V1050 H472"/>
+        <!-- פנים האותיות – לסגנון קו מתאר -->
+        <path class="inner" d="M1147 1075 V689 H1330 A117 117 0 0 1 1447 806 V1075" stroke-linejoin="miter"/>
+        <path class="inner" d="M592 877 Q505 860 505 780 V689 H640 A162 162 0 0 1 802 851 V1050 H480"/>
+      </svg>
+      <div class="label">
+        <h1>חגי פריש</h1>
+        <p>חוקר פרטי</p>
+      </div>
+    </div>
+  </header>
+
+  <nav class="actions">
+    <a class="act" href="tel:+972522574466"><span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span>חיוג</a>
+    <a class="act" href="https://wa.me/972522574466" target="_blank" rel="noopener"><span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5z"/></svg></span>וואטסאפ</a>
+    <a class="act" href="mailto:hagai@frischcom.com"><span class="ic"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg></span>מייל</a>
+    <a class="act" href="https://www.frischcom.com" target="_blank" rel="noopener"><span class="ic"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>אתר</a>
+  </nav>
+
+  <ul class="details">
+    <li><a href="tel:+972522574466"><svg class="i" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg><div><small>נייד</small><span>052-2574466</span></div></a></li>
+    <li><a href="mailto:hagai@frischcom.com"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg><div><small>דוא״ל</small><span>hagai@frischcom.com</span></div></a></li>
+    <li><a href="https://www.frischcom.com" target="_blank" rel="noopener"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg><div><small>אתר</small><span>www.frischcom.com</span></div></a></li>
+  </ul>
+
+  <div class="btns">
+    <button class="primary" id="save"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>שמירת איש קשר</button>
+    <button class="ghost" id="share"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>שיתוף הכרטיס</button>
+  </div>
+
+  <section class="qr">
+    <div class="qr-box" id="qrcode"></div>
+    <p>סרקו לשמירת פרטי הקשר</p>
+  </section>
+
+  <footer>FRISCHCOM.COM</footer>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+  const contact = {
+    first: 'חגי', last: 'פריש', title: 'חוקר פרטי',
+    phone: '+972522574466', email: 'hagai@frischcom.com', url: 'https://www.frischcom.com'
+  };
+  const vcard = [
+    'BEGIN:VCARD','VERSION:3.0',
+    `N;CHARSET=UTF-8:${contact.last};${contact.first};;;`,
+    `FN;CHARSET=UTF-8:${contact.first} ${contact.last}`,
+    `TITLE;CHARSET=UTF-8:${contact.title}`,
+    `TEL;TYPE=CELL:${contact.phone}`,
+    `EMAIL;TYPE=INTERNET:${contact.email}`,
+    `URL:${contact.url}`,
+    'END:VCARD'
+  ].join('\r\n');
+
+  function toast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  document.getElementById('save').onclick = () => {
+    const blob = new Blob([vcard], {type:'text/vcard;charset=utf-8'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'Hagai-Frisch.vcf';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  };
+
+  document.getElementById('share').onclick = async () => {
+    const pageUrl = location.protocol.startsWith('http') ? location.href : contact.url;
+    const data = {title:'חגי פריש | חוקר פרטי', text:'כרטיס הביקור של חגי פריש, חוקר פרטי', url:pageUrl};
+    if (navigator.share) { try { await navigator.share(data); } catch(e) {} return; }
+    try { await navigator.clipboard.writeText(pageUrl); toast('הקישור הועתק'); }
+    catch(e) { toast(pageUrl); }
+  };
+
+  // QR מכיל את פרטי איש הקשר – סריקה בטלפון מציעה לשמור אותו ישירות
+  try {
+    new QRCode(document.getElementById('qrcode'), {
+      text: unescape(encodeURIComponent(vcard)), width: 300, height: 300,
+      colorDark:'#4a3a2f', colorLight:'#ffffff', correctLevel: QRCode.CorrectLevel.M
+    });
+  } catch(e) { console.warn('QR', e); }
+
+  // בורר סגנון תווית זמני
+  document.getElementById('labelStyle').onchange = e => {
+    document.documentElement.dataset.label = e.target.value;
+  };
+
+  // בורר צבעים זמני
+  document.querySelectorAll('.sw').forEach(b => b.onclick = () => {
+    document.documentElement.dataset.theme = b.dataset.t;
+    document.getElementById('themeName').textContent = b.dataset.n;
+    document.querySelectorAll('.sw').forEach(x => x.setAttribute('aria-pressed', x === b));
+    document.querySelector('meta[name=theme-color]').content = getComputedStyle(document.body).backgroundColor;
+  });
+</script>
+</body>
+</html>

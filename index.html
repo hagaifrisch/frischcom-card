@@ -148,34 +148,9 @@
     font-size:14px; transition:transform .3s; pointer-events:none;
   }
   .toast.show{transform:translateX(-50%) translateY(0)}
-
-  /* ===== בורר סגנון תווית זמני – להסרה אחרי שבוחרים ===== */
-  .picker{
-    position:fixed; top:12px; left:50%; transform:translateX(-50%); z-index:10;
-    display:flex; align-items:center; gap:8px; padding:7px 10px;
-    background:rgba(255,255,255,.92); border:1px solid #ddd; border-radius:999px;
-    box-shadow:0 4px 16px rgba(0,0,0,.12); font-size:12px; color:#555;
-  }
-  .picker b{font-weight:500; padding:0 4px; white-space:nowrap}
-  .picker{flex-wrap:wrap; justify-content:center; max-width:calc(100vw - 24px); border-radius:18px}
-  .picker .sep{width:1px; height:22px; background:#ddd}
-  .picker select{font:inherit; font-size:12px; padding:4px 6px; border:1px solid #ccc; border-radius:8px; background:#fff}
-  .sw{width:26px; height:26px; border-radius:50%; cursor:pointer; border:2px solid #fff; box-shadow:0 0 0 1px #ccc}
-  .sw[aria-pressed="true"]{box-shadow:0 0 0 2px #333}
-  body{padding-top:112px}
 </style>
 </head>
 <body>
-<div class="picker" role="group" aria-label="בחירת סגנון תווית">
-  <b>תווית:</b>
-  <select id="labelStyle" aria-label="סגנון תווית">
-    <option value="solid">לבנה (מקור)</option>
-    <option value="glass" selected>זכוכית</option>
-    <option value="faded">שקופה – אותיות עמומות</option>
-    <option value="outline">שקופה – קו מתאר</option>
-    <option value="halo">שקופה – הילה סביב הכיתוב</option>
-  </select>
-</div>
 
 <main class="card">
   <header>
@@ -280,11 +255,6 @@
       if (el.getAttribute('fill') === 'black' || el.getAttribute('fill') === '#000000') el.setAttribute('fill', '#4a3a2f');
     });
   } catch(e) { console.warn('QR', e); }
-
-  // בורר סגנון תווית זמני
-  document.getElementById('labelStyle').onchange = e => {
-    document.documentElement.dataset.label = e.target.value;
-  };
 </script>
 </body>
 </html>

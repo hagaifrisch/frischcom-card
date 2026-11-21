@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="he" dir="rtl" data-theme="logo" data-label="glass">
+<html lang="he" dir="rtl" data-theme="espresso" data-label="glass">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,15 +7,15 @@
 <meta name="description" content="חגי פריש – חוקר פרטי. טלפון 052-2574466 · hagai@frischcom.com">
 <meta property="og:title" content="חגי פריש | חוקר פרטי">
 <meta property="og:description" content="כרטיס ביקור דיגיטלי – חיוג, וואטסאפ, מייל ושמירת איש קשר">
-<meta name="theme-color" content="#f8f6f2">
+<meta name="theme-color" content="#1c1612">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <style>
   /* ===== פלטות צבע ===== */
   :root, [data-theme="logo"]{          /* צבעי הלוגו */
-    --page:#efebe4; --card:#f8f6f2; --line:#e4ddd2;
+    --page:#ebe5dc; --card:#f8f6f2; --line:#e4ddd2;
     --mark:#bf9579; --ink:#6f5848; --muted:#9a8a7d;
     --label-bg:#ffffff; --label-ink:#6f5848;
     --btn-bg:#bf9579; --btn-ink:#ffffff; --chip:#ffffff;
@@ -46,14 +46,19 @@
     display:flex; justify-content:center; align-items:flex-start;
     padding:32px 16px; transition:background .3s,color .3s;
   }
+  /* ===== כרטיס עם מסגרת עומק – כמו בלוגו: לוח מורם + קו כפול פנימי ===== */
   .card{
-    width:100%; max-width:420px; background:var(--card);
-    border:1px solid var(--line); border-radius:22px; overflow:hidden;
-    box-shadow:0 18px 50px rgba(60,40,25,.14); transition:background .3s;
+    position:relative; width:100%; max-width:420px; padding:22px;
+    border-radius:24px; overflow:hidden; transition:background .3s;
+    background:linear-gradient(180deg, color-mix(in srgb, var(--card) 85%, #fff), var(--card) 40%);
+    box-shadow:0 6px 12px rgba(90,67,52,.10), 0 24px 54px rgba(90,67,52,.18);
   }
+  .card::before, .card::after{content:""; position:absolute; pointer-events:none; z-index:2}
+  .card::before{inset:12px; border:2px solid var(--mark); border-radius:15px; box-shadow:0 1px 0 rgba(255,255,255,.6)}
+  .card::after{inset:18px; border:1px solid color-mix(in srgb, var(--mark) 35%, transparent); border-radius:10px}
 
   /* ===== לוגו ===== */
-  header{padding:36px 24px 26px; text-align:center; border-bottom:1px solid var(--line)}
+  header{padding:30px 10px 26px; text-align:center; border-bottom:1px solid var(--line)}
   .logo{position:relative; width:100%; max-width:330px; margin:0 auto}
   .logo svg{display:block; width:100%; height:auto; overflow:visible}
   .logo .stroke{stroke:var(--mark); fill:none; stroke-width:66; filter:drop-shadow(10px 10px 10px rgba(0,0,0,.12))}
@@ -133,7 +138,7 @@
 
   .qr{padding:20px 20px 26px; text-align:center}
   .qr-box{display:inline-block; background:#fff; padding:12px; border-radius:14px; border:1px solid var(--line)}
-  .qr-box img,.qr-box canvas{display:block; width:140px; height:140px}
+  .qr-box svg{display:block; width:150px; height:150px}
   .qr p{color:var(--muted); font-size:13px; margin-top:12px}
 
   footer{border-top:1px solid var(--line); padding:16px; text-align:center; color:var(--muted); font-size:12px; letter-spacing:.15em}
@@ -144,7 +149,7 @@
   }
   .toast.show{transform:translateX(-50%) translateY(0)}
 
-  /* ===== בורר צבעים זמני – להסרה אחרי שבוחרים ===== */
+  /* ===== בורר סגנון תווית זמני – להסרה אחרי שבוחרים ===== */
   .picker{
     position:fixed; top:12px; left:50%; transform:translateX(-50%); z-index:10;
     display:flex; align-items:center; gap:8px; padding:7px 10px;
@@ -161,13 +166,7 @@
 </style>
 </head>
 <body>
-<div class="picker" role="group" aria-label="בחירת צבעים">
-  <b id="themeName">צבעי הלוגו</b>
-  <button class="sw" data-t="logo" data-n="צבעי הלוגו" style="background:linear-gradient(135deg,#f8f6f2 50%,#bf9579 50%)" aria-pressed="true"></button>
-  <button class="sw" data-t="espresso" data-n="אספרסו" style="background:linear-gradient(135deg,#2a211c 50%,#c9a083 50%)"></button>
-  <button class="sw" data-t="navy" data-n="כחול לילה" style="background:linear-gradient(135deg,#17212e 50%,#c59a7c 50%)"></button>
-  <button class="sw" data-t="sage" data-n="מרווה" style="background:linear-gradient(135deg,#f6f6f2 50%,#7d8b72 50%)"></button>
-  <span class="sep"></span>
+<div class="picker" role="group" aria-label="בחירת סגנון תווית">
   <b>תווית:</b>
   <select id="labelStyle" aria-label="סגנון תווית">
     <option value="solid">לבנה (מקור)</option>
@@ -269,9 +268,16 @@
 
   // QR מכיל את פרטי איש הקשר – סריקה בטלפון מציעה לשמור אותו ישירות
   try {
-    new QRCode(document.getElementById('qrcode'), {
-      text: unescape(encodeURIComponent(vcard)), width: 300, height: 300,
-      colorDark:'#4a3a2f', colorLight:'#ffffff', correctLevel: QRCode.CorrectLevel.M
+    qrcode.stringToBytes = qrcode.stringToBytesFuncs['UTF-8'];   // תמיכה בעברית
+    const qr = qrcode(0, 'M');                                    // 0 = גודל אוטומטי
+    qr.addData(vcard, 'Byte');
+    qr.make();
+    const box = document.getElementById('qrcode');
+    box.innerHTML = qr.createSvgTag({cellSize: 4, margin: 0, scalable: true});
+    box.querySelector('svg').setAttribute('role', 'img');
+    box.querySelector('svg').setAttribute('aria-label', 'קוד QR לשמירת איש הקשר');
+    box.querySelectorAll('path, rect').forEach(el => {
+      if (el.getAttribute('fill') === 'black' || el.getAttribute('fill') === '#000000') el.setAttribute('fill', '#4a3a2f');
     });
   } catch(e) { console.warn('QR', e); }
 
@@ -279,14 +285,6 @@
   document.getElementById('labelStyle').onchange = e => {
     document.documentElement.dataset.label = e.target.value;
   };
-
-  // בורר צבעים זמני
-  document.querySelectorAll('.sw').forEach(b => b.onclick = () => {
-    document.documentElement.dataset.theme = b.dataset.t;
-    document.getElementById('themeName').textContent = b.dataset.n;
-    document.querySelectorAll('.sw').forEach(x => x.setAttribute('aria-pressed', x === b));
-    document.querySelector('meta[name=theme-color]').content = getComputedStyle(document.body).backgroundColor;
-  });
 </script>
 </body>
 </html>
